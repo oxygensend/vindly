@@ -8,10 +8,11 @@ async function createMovie(req, res){
     if (error)
         return res.status(400).send(error.message);
 
-    const genre = Genre.findById(req.body.genreId);
-    if(genre)
-        return res.status(404).send('Invalid genre...');
+    const genre = await Genre.findById(req.body.genreId);
+    if(!genre)
+        return res.status(400).send('Invalid genre...');
 
+    console.log(genre);
     const movie = await Movie.create({
         title: value.title,
         numberInStock: value.numberInStock,
