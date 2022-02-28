@@ -5,6 +5,9 @@ const home = require('./routes/home');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
 const mongoose = require("mongoose");
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
+
 const app = express();
 const port = process.env.PORT | 3000;
 
