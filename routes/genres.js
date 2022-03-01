@@ -5,7 +5,7 @@ const router = require('express').Router();
 
 // Database
 
-async function createGenre(req, res){
+async function createGenre(req, res) {
     const {error, value} = validate(req.body);
 
     if (error)
@@ -13,18 +13,19 @@ async function createGenre(req, res){
 
     const genre = await Genre.create({
         name: value.name,
-    })
+    });
     res.send(genre);
 }
 
-async function getGenres(req, res){
+async function getGenres(req, res, next) {
+    throw new Error('Something valid');
     let genres = await Genre.find().sort('name');
     res.send(genres);
 }
 
-async function updateGenre(req, res){
+async function updateGenre(req, res) {
 
-    let genre = await  Genre.findById(req.params.id);
+    let genre = await Genre.findById(req.params.id);
     if (!genre)
         return res.status(404).send("Page not found.");
 
@@ -37,24 +38,26 @@ async function updateGenre(req, res){
     genre.save();
     res.send(genre);
 }
-async function getGenre(req, res){
+
+async function getGenre(req, res) {
     const genre = await Genre.findById(req.params.id);
     if (!genre)
         return res.status(404).send("Page not found.");
     res.send(genre);
 }
 
-async function deleteGenre(req, res){
+async function deleteGenre(req, res) {
     const genre = await Genre.findByIdAndRemove(req.params.id);
     if (!genre)
         return res.status(404).send("Page not found.");
     res.send(genre);
 }
+
 router.get('/', getGenres);
 router.post('/', [auth, admin], createGenre);
-router.put( '/:id',[auth, admin], updateGenre);
+router.put('/:id', [auth, admin], updateGenre);
 router.get('/:id', getGenre);
-router.delete('/:id',[auth, admin], deleteGenre);
+router.delete('/:id', [auth, admin], deleteGenre);
 
 
 module.exports = router;
