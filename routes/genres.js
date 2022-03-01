@@ -1,9 +1,9 @@
 const {Genre, validate} = require('../models/genre');
+const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const router = require('express').Router();
 
 // Database
-
-
 
 async function createGenre(req, res){
     const {error, value} = validate(req.body);
@@ -51,10 +51,10 @@ async function deleteGenre(req, res){
     res.send(genre);
 }
 router.get('/', getGenres);
-router.post('/', createGenre);
-router.put( '/:id', updateGenre);
+router.post('/', [auth, admin], createGenre);
+router.put( '/:id',[auth, admin], updateGenre);
 router.get('/:id', getGenre);
-router.delete('/:id', deleteGenre);
+router.delete('/:id',[auth, admin], deleteGenre);
 
 
 module.exports = router;

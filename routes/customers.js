@@ -1,4 +1,6 @@
 const {Customer, validate} = require('../models/customer');
+const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const router = require('express').Router();
 
 
@@ -53,9 +55,9 @@ async function deleteCustomer(req, res){
     res.send(customer);
 }
 router.get('/', getCustomers);
-router.post('/', createCustomer);
-router.put( '/:id', updateCustomer);
+router.post('/', [auth, admin],createCustomer);
+router.put( '/:id',[auth, admin], updateCustomer);
 router.get('/:id', getCustomer);
-router.delete('/:id', deleteCustomer);
+router.delete('/:id',[auth, admin], deleteCustomer);
 
 module.exports = router;

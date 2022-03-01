@@ -1,5 +1,7 @@
 const {Movie, validate} = require('../models/movie');
 const {Genre} = require("../models/genre");
+const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const router = require('express').Router();
 
 async function createMovie(req, res){
@@ -62,9 +64,9 @@ async function deleteMovie(req, res){
     res.send(movie);
 }
 router.get('/', getMovies);
-router.post('/', createMovie);
-router.put( '/:id', updateMovie);
+router.post('/', [auth, admin],  createMovie);
+router.put( '/:id', [auth, admin], updateMovie);
 router.get('/:id', getMovie);
-router.delete('/:id', deleteMovie);
+router.delete('/:id', [auth, admin], deleteMovie);
 
 module.exports = router;

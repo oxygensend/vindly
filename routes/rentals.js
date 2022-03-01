@@ -1,6 +1,8 @@
 const {Rental, validate} = require('../models/rental');
 const {Customer} = require("../models/customer");
 const {Movie} = require("../models/movie");
+const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const Fawn = require('fawn');
 const mongoose = require("mongoose");
 const router = require('express').Router();
@@ -25,7 +27,7 @@ async function createRental(req, res) {
     if (movie.numberInStock === 0)
         return res.status(400).send('Movie is not in the stock');
 
-    let rental = new  Rental({
+    let rental = new Rental({
         customer: {
             _id: customer._id,
             name: customer.name,
@@ -42,7 +44,7 @@ async function createRental(req, res) {
 
     // transaction
     try {
-       new Fawn.Task()
+        new Fawn.Task()
             .save('rentals', rental)
             .update('movies', {_id: movie._id}, {
                 $inc: {numberInStock: -1}
@@ -53,18 +55,19 @@ async function createRental(req, res) {
         res.status(500).send("Something failed");
     }
 
-
+    router;
 }
-async function getRental(req, res){
+
+async function getRental(req, res) {
     const rental = await Rental.findById(req.params.id);
 
-  if (!rental) return res.status(404).send('The rental with the given ID was not found.');
+    if (!rental) return res.status(404).send('The rental with the given ID was not found.');
 
-  res.send(rental);
+    res.send(rental);
 }
 
 router.get('/', getRentals);
-router.post('/', createRental);
+router.post('/', [auth, admin], createRental);
 router.get('/:id', getRental);
 
 module.exports = router;
