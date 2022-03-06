@@ -3,6 +3,7 @@ const {Customer} = require("../models/customer");
 const {Movie} = require("../models/movie");
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
+const validateObjectId = require('../middlewares/validateObjectId');
 const Fawn = require('fawn');
 const mongoose = require("mongoose");
 const router = require('express').Router();
@@ -67,7 +68,7 @@ async function getRental(req, res) {
 }
 
 router.get('/', getRentals);
-router.post('/', [auth, admin], createRental);
-router.get('/:id', getRental);
+router.post('/', auth, admin, createRental);
+router.get('/:id', validateObjectId,getRental);
 
 module.exports = router;

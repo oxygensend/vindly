@@ -1,4 +1,7 @@
 {
+  "directories": {
+    "test": "tests"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "config": "^3.3.7",
@@ -13,5 +16,12 @@
     "mongoose": "^6.2.3",
     "winston": "^3.6.0",
     "winston-mongodb": "^5.0.7"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "supertest": "^6.2.2"
+  },
+  "scripts": {
+    "test": "jest --watchAll --verbose --coverage"
   }
 }

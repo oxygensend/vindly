@@ -1,5 +1,6 @@
 const {Genre, validate} = require('../models/genre');
 const auth = require('../middlewares/auth');
+const validateObjectId = require('../middlewares/validateObjectId');
 const admin = require('../middlewares/admin');
 const router = require('express').Router();
 
@@ -18,7 +19,6 @@ async function createGenre(req, res) {
 }
 
 async function getGenres(req, res, next) {
-    throw new Error('Something valid');
     let genres = await Genre.find().sort('name');
     res.send(genres);
 }
@@ -26,8 +26,6 @@ async function getGenres(req, res, next) {
 async function updateGenre(req, res) {
 
     let genre = await Genre.findById(req.params.id);
-    if (!genre)
-        return res.status(404).send("Page not found.");
 
     const {error, value} = validate(req.body);
 
@@ -41,23 +39,19 @@ async function updateGenre(req, res) {
 
 async function getGenre(req, res) {
     const genre = await Genre.findById(req.params.id);
-    if (!genre)
-        return res.status(404).send("Page not found.");
     res.send(genre);
 }
 
 async function deleteGenre(req, res) {
     const genre = await Genre.findByIdAndRemove(req.params.id);
-    if (!genre)
-        return res.status(404).send("Page not found.");
     res.send(genre);
 }
 
 router.get('/', getGenres);
-router.post('/', [auth, admin], createGenre);
-router.put('/:id', [auth, admin], updateGenre);
-router.get('/:id', getGenre);
-router.delete('/:id', [auth, admin], deleteGenre);
+router.post('/', auth, createGenre);
+router.put('/:id', validateObjectId, auth, updateGenre);
+router.get('/:id', validateObjectId, getGenre);
+router.delete('/:id', validateObjectId, auth,admin, deleteGenre);
 
 
 module.exports = router;

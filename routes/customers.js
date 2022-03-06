@@ -1,11 +1,11 @@
 const {Customer, validate} = require('../models/customer');
 const auth = require('../middlewares/auth');
+const validateObjectId = require('../middlewares/validateObjectId');
 const admin = require('../middlewares/admin');
 const router = require('express').Router();
 
 
-
-async function createCustomer(req, res){
+async function createCustomer(req, res) {
     const {error, value} = validate(req.body);
 
     if (error)
@@ -15,18 +15,18 @@ async function createCustomer(req, res){
         name: value.name,
         isGold: value.isGold,
         phone: value.phone,
-    })
+    });
     res.send(customer);
 }
 
-async function getCustomers(req, res){
+async function getCustomers(req, res) {
     let customers = await Customer.find().sort('name');
     res.send(customers);
 }
 
-async function updateCustomer(req, res){
+async function updateCustomer(req, res) {
 
-    let customer = await  Customer.findById(req.params.id);
+    let customer = await Customer.findById(req.params.id);
     if (!customer)
         return res.status(404).send("Page not found.");
 
@@ -41,23 +41,25 @@ async function updateCustomer(req, res){
     customer.save();
     res.send(customer);
 }
-async function getCustomer(req, res){
+
+async function getCustomer(req, res) {
     const customer = await Customer.findById(req.params.id);
     if (!customer)
         return res.status(404).send("Page not found.");
     res.send(customer);
 }
 
-async function deleteCustomer(req, res){
+async function deleteCustomer(req, res) {
     const customer = await Customer.findByIdAndRemove(req.params.id);
     if (!customer)
         return res.status(404).send("Page not found.");
     res.send(customer);
 }
+
 router.get('/', getCustomers);
-router.post('/', [auth, admin],createCustomer);
-router.put( '/:id',[auth, admin], updateCustomer);
-router.get('/:id', getCustomer);
-router.delete('/:id',[auth, admin], deleteCustomer);
+router.post('/', auth, admin, createCustomer);
+router.put('/:id', validateObjectId, auth, admin, updateCustomer);
+router.get('/:id', validateObjectId, getCustomer);
+router.delete('/:id', validateObjectId, auth, admin, deleteCustomer);
 
 module.exports = router;
