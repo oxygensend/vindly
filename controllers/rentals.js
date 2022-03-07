@@ -2,8 +2,8 @@ const {Rental, validate} = require('../models/rental');
 const {Customer} = require("../models/customer");
 const {Movie} = require("../models/movie");
 const Fawn = require('fawn');
+const config = require("config");
 
-Fawn.init("mongodb://localhost/vidly");
 
 exports.index = async (req, res) => {
     const rentals = await Rental.find().sort('-dateOut');
@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
 
     // transaction
     try {
-        new Fawn.Task()
+        await new Fawn.Task()
             .save('rentals', rental)
             .update('movies', {_id: movie._id}, {
                 $inc: {numberInStock: -1}

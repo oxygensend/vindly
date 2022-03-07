@@ -1,16 +1,12 @@
 const request = require('supertest');
 const {Genre} = require('../../models/genre');
 const {User} = require("../../models/user");
-let server;
+const server = require('../../app');
 
 describe('api/genres', () => {
-    beforeEach(() => {
-        server = require('../../app');
-    });
-    afterEach(async () => {
-        server.close();
-        await Genre.deleteMany({});
 
+    afterEach(async () => {
+        await Genre.deleteMany({});
     });
 
     describe(' GET /', () => {
@@ -56,20 +52,14 @@ describe('api/genres', () => {
 
     let token;
     let name;
-    const exec = async () => {
-        return await request(server)
+    const exec = () => {
+        return request(server)
             .post('/api/genres')
             .set('x-auth-token', token)
             .send({name});
     };
     beforeEach(() => {
-        server = require('../../app');
         token = new User().generateAuthToken();
-
-    });
-    afterEach(async () => {
-        server.close();
-        await Genre.deleteMany({});
 
     });
 
@@ -91,12 +81,13 @@ describe('api/genres', () => {
             expect(genre).not.toBeNull();
 
         });
-        ;
+
         it('should return 400 status if genre is less than 3 char', async () => {
             name = 'Ge';
             const res = await exec();
             expect(res.status).toBe(400);
         });
+
         it('should return 400 status if genre doesnt match pattern', async () => {
             name = 'genre';
             const res = await exec();
@@ -111,8 +102,8 @@ describe('api/genres', () => {
         let token;
         let genre;
 
-        const exec = async (id) => {
-            return await request(server)
+        const exec = (id) => {
+            return request(server)
                 .delete('/api/genres/' + id)
                 .set('x-auth-token', token);
         };
@@ -166,20 +157,18 @@ describe('api/genres', () => {
         let token;
         let genre;
         let name;
-        const exec = async (id) => {
-            return await request(server)
+        const exec = (id) => {
+            return request(server)
                 .put('/api/genres/' + id)
                 .set('x-auth-token', token)
                 .send({name: name});
         };
         beforeEach(async () => {
-            server = require('../../app');
             token = new User().generateAuthToken();
             genre = await Genre.create({name: 'Genre'});
 
         });
         afterEach(async () => {
-            server.close();
             await Genre.deleteMany({});
 
         });

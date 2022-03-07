@@ -1,16 +1,10 @@
 const request = require('supertest');
 const {User} = require("../../models/user");
 const {Genre} = require("../../models/genre");
-let server;
-
+const server = require('../../app');
 describe('auth middleware', () => {
 
-    beforeEach(() => {
-        server = require('../../app');
-    });
-    afterEach(() => {
-        server.close();
-    });
+
     let token;
     const exec = () => {
         return request(server)
