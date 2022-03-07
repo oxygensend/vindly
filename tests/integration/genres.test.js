@@ -42,6 +42,7 @@ describe('api/genres', () => {
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('name', genre.name);
         });
+
         it('should return 404 status if given id doesnt exist', async () => {
 
             const res = await request(server).get(`/api/genres/1`);
@@ -72,6 +73,7 @@ describe('api/genres', () => {
             expect(res.status).toBe(401);
 
         });
+
         it('should save new genre to db', async () => {
 
             name = 'Genre';
@@ -129,6 +131,7 @@ describe('api/genres', () => {
 
             expect(res.status).toBe(404);
         });
+
         it('should return 403 status if user is not admin', async () => {
             token = new User().generateAuthToken();
             const res = await exec(genre._id);
@@ -179,10 +182,12 @@ describe('api/genres', () => {
             const res = await exec(genre._id);
             expect(res.status).toBe(401);
         });
+
         it('should return 404 status if valid id is given', async () => {
             const res = await exec('1');
             expect(res.status).toBe(404);
         });
+
         it('should change data of the genre properly', async () => {
             name = 'NewGenre';
             const res = await exec(genre._id);
@@ -190,11 +195,13 @@ describe('api/genres', () => {
             expect(updatedGenre.name).toBe("NewGenre");
             expect(res.status).toBe(200);
         });
+
         it('should return 400 status if genre is less than 3 char', async () => {
             name = 'Ge';
             const res = await exec(genre._id);
             expect(res.status).toBe(400);
         });
+
         it('should return 400 status if genre doesnt match pattern', async () => {
             name = 'genre';
             const res = await exec(genre._id);
