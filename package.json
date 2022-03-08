@@ -23,6 +23,6 @@
     "supertest": "^6.2.2"
   },
   "scripts": {
-    "test": "jest  --verbose --runInBand "
+    "test": "jest  --verbose --runInBand --coverage "
   }
 }

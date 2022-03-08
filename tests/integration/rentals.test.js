@@ -44,7 +44,6 @@ describe('/api/rentals', () => {
             expect(res.body.some(g => g.movie.title === movie.title)).toBeTruthy();
 
 
-
         });
     });
     describe('GET /:id', () => {
@@ -149,6 +148,21 @@ describe('/api/rentals', () => {
 
             expect(res.status).toBe(400);
         });
+
+        it('should return 400 status if customerId is not provided', async () => {
+            customerId = '';
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 status if moveId is not provided', async () => {
+            movieId = '';
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
 
         it('should return 400 if there is no books in stock', async () => {
             movie.numberInStock = 0;

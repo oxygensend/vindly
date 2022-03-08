@@ -71,6 +71,19 @@ describe('/api/returns', () => {
         expect(res.status).toBe(400);
     });
 
+    it('should return 400 if customer doesnt exists', async () => {
+        customerId = new ObjectId();
+        const res = await exec();
+
+        expect(res.status).toBe(400);
+    });
+
+    it('should return 400 if movie doesnt exists', async () => {
+        movieId = new ObjectId();
+        const res = await exec();
+
+        expect(res.status).toBe(400);
+    });
     it('should return 404 status if no rental found for this customer/movie', async () => {
         await Rental.deleteMany({});
         const res = await exec();

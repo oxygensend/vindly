@@ -31,3 +31,7 @@ describe('auth middleware', () => {
         await Genre.deleteMany({});
     });
 });
+
+describe('/api/auth', () => {
+
+})

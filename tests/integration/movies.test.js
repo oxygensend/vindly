@@ -8,6 +8,10 @@ const ObjectId = require('mongoose').Types.ObjectId;
 
 describe('/api/moveis', () => {
 
+    beforeAll( async () => {
+        await Movie.deleteMany({})
+    })
+
     describe('GET /', () => {
 
         it('should return all existing movies', async () => {

@@ -2,9 +2,13 @@ const request = require('supertest');
 const {Genre} = require('../../models/genre');
 const {User} = require("../../models/user");
 const server = require('../../app');
+const ObjectId = require('mongoose').Types.ObjectId
 
 describe('api/genres', () => {
 
+    beforeAll(async () => {
+        await Genre.deleteMany({})
+    })
 
     describe(' GET /', () => {
         it('should return all existing genres', async () => {
@@ -44,7 +48,7 @@ describe('api/genres', () => {
 
         it('should return 404 status if given id doesnt exist', async () => {
 
-            const res = await request(server).get(`/api/genres/1`);
+            const res = await request(server).get(`/api/genres/` + new ObjectId());
 
             expect(res.status).toBe(404);
         });
@@ -130,7 +134,7 @@ describe('api/genres', () => {
         });
 
         it('should return 404 status if given id is valid', async () => {
-            const res = await exec('1');
+            const res = await exec(new ObjectId());
 
             expect(res.status).toBe(404);
         });
@@ -187,7 +191,7 @@ describe('api/genres', () => {
         });
 
         it('should return 404 status if valid id is given', async () => {
-            const res = await exec('1');
+            const res = await exec(new ObjectId());
             expect(res.status).toBe(404);
         });
 
@@ -210,7 +214,10 @@ describe('api/genres', () => {
             const res = await exec(genre._id);
             expect(res.status).toBe(400);
         });
-
+        it('should return 404 status if genre is invalid', async () => {
+            const res = await exec(new ObjectId());
+            expect(res.status).toBe(404);
+        });
 
     });
 });

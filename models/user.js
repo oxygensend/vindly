@@ -41,7 +41,7 @@ exports.validate = (user) => {
     const schema = Joi.object({
         name: Joi.string().min(2).max(50).required(),
         email: Joi.string().min(5).max(255).email().required(),
-        password: passwordComplexity({min: 5}).required(),
+        password: passwordComplexity().required(),
     });
     return schema.validate(user);
 };
