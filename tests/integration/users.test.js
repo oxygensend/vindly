@@ -1,5 +1,4 @@
 const request = require('supertest');
-const {Genre} = require('../../models/genre');
 const {User} = require("../../models/user");
 const server = require('../../app');
 const ObjectId = require('mongoose').Types.ObjectId;
@@ -75,5 +74,58 @@ describe('/api/users', () => {
             expect(res.body.some(g => g.password === 'test123')).toBeTruthy();
             expect(res.body.some(g => g.isAdmin === false)).toBeTruthy();
         });
+    });
+
+    describe('POST /users', () => {
+
+        let name = 'Test';
+        let email = 'test@test.com';
+        let password = 'test123';
+        beforeEach(() => {
+
+        });
+
+        const exec = () => {
+            return request(server)
+                .post('/api/users')
+                .send({name, email, password});
+        };
+
+        it('should return 400 status if user is already registered ', async () => {
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+
+
+        });
+
+        it('should return 400 if password is invalid', async () => {
+            password = 'test';
+            token = new User().generateAuthToken();
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+
+        });
+
+        it('should return 400 if email is invaild', async () => {
+            email = 'test.com';
+            token = new User().generateAuthToken();
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+
+        });
+
+        it('should return 400 if name is invalid', async () => {
+            name = '1';
+            token = new User().generateAuthToken();
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+
+        });
+
     });
 });
