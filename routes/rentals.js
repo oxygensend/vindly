@@ -6,7 +6,7 @@ const validateObjectId = require('../middlewares/validateObjectId');
 const router = require('express').Router();
 
 router.get('/', RentalController.index);
-router.post('/', auth, admin, RentalController.create);
+router.post('/', auth,  RentalController.create);
 router.get('/:id', validateObjectId,RentalController.get);
 
 module.exports = router;

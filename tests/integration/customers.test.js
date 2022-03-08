@@ -1,10 +1,8 @@
 const request = require('supertest');
-const {Genre} = require('../../models/genre');
 const {User} = require("../../models/user");
 const server = require('../../app');
-const {Movie} = require("../../models/movie");
 const {Customer} = require("../../models/customer");
-const ObjectId = require('mongoose').Types.ObjectId
+const ObjectId = require('mongoose').Types.ObjectId;
 
 
 describe('/api/customers', () => {
@@ -17,13 +15,13 @@ describe('/api/customers', () => {
                 {name: 'Customer2', isGold: true, phone: '123456789'},
             ]);
             const res = await request(server).get('/api/customers');
+            await Customer.deleteMany({});
 
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
             expect(res.body.some(g => g.name === 'Customer1')).toBeTruthy();
             expect(res.body.some(g => g.name === 'Customer2')).toBeTruthy();
 
-            await Customer.deleteMany({});
         });
 
         it('should empty body with no customers', async () => {
@@ -32,7 +30,7 @@ describe('/api/customers', () => {
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(0);
         });
-    })
+    });
 
     describe('GET /:id', () => {
         it('should return customer with proper id', async () => {
@@ -44,7 +42,7 @@ describe('/api/customers', () => {
             const res = await request(server).get(`/api/customers/${customer._id}`);
 
             expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('name', 'Customer1')
+            expect(res.body).toHaveProperty('name', 'Customer1');
 
             await Customer.deleteMany({});
         });
@@ -57,11 +55,10 @@ describe('/api/customers', () => {
     });
 
 
-
     describe('POST/', () => {
         let token;
-        let name
-        let phone
+        let name;
+        let phone;
         const exec = () => {
             return request(server)
                 .post('/api/customers')
@@ -69,8 +66,8 @@ describe('/api/customers', () => {
                 .send({name, phone});
         };
         beforeEach(() => {
-            name = 'Customer'
-            phone = '123456789'
+            name = 'Customer';
+            phone = '123456789';
             token = new User().generateAuthToken();
 
         });
@@ -85,7 +82,7 @@ describe('/api/customers', () => {
 
         it('should return 400 status if customer is less than 3 char', async () => {
 
-            name = 'Cu'
+            name = 'Cu';
             const res = await exec();
             expect(res.status).toBe(400);
         });
@@ -121,17 +118,15 @@ describe('/api/customers', () => {
         it('should return new customer in response', async () => {
             const res = await exec();
 
-            expect(res.body).toHaveProperty('name', 'Customer')
-        })
+            expect(res.body).toHaveProperty('name', 'Customer');
+        });
 
     });
-
 
 
     describe('DELETE/:id', () => {
 
         let token;
-        let genre;
         let customer;
 
 
@@ -141,7 +136,7 @@ describe('/api/customers', () => {
         });
 
         afterEach(async () => {
-            await Genre.deleteMany({});
+            await Customer.deleteMany({});
         });
         const exec = (id) => {
             return request(server)
@@ -171,7 +166,6 @@ describe('/api/customers', () => {
 
         it('should delete object from database', async () => {
             const res = await exec(customer._id);
-            console.log(res.error)
             const find_customer = await Customer.find({_id: customer._id});
 
             expect(res.status).toBe(200);
@@ -225,20 +219,20 @@ describe('/api/customers', () => {
         });
         it('should return 400 status if customer is less than 3 char', async () => {
 
-            name = 'Cu'
+            name = 'Cu';
             const res = await exec(customer._id);
             expect(res.status).toBe(400);
         });
 
         it('should return 400 status if customer is more than 50 char', async () => {
             name = new Array(52).join('A');
-            const res = await exec(customer._id)
+            const res = await exec(customer._id);
             expect(res.status).toBe(400);
         });
 
         it('should return 400 status if customer name first letter is not uppercase', async () => {
             name = 'customer';
-            const res = await exec(customer._id)
+            const res = await exec(customer._id);
             expect(res.status).toBe(400);
         });
 
@@ -251,7 +245,7 @@ describe('/api/customers', () => {
         it('should change data of the customer properly', async () => {
             name = 'NewCustomer';
             isGold = true;
-            phone = '123321123'
+            phone = '123321123';
 
             const res = await exec(customer._id);
             const updatedCustomer = await Customer.findById(customer._id);
@@ -263,17 +257,17 @@ describe('/api/customers', () => {
         });
 
         it('should return updated customer in response', async () => {
-            name = 'NewCustomer';
-            isGold = true;
-            phone = '123321123'
+                name = 'NewCustomer';
+                isGold = true;
+                phone = '123321123';
 
-            const res = await exec(customer._id);
+                const res = await exec(customer._id);
 
-            expect(res.body).toHaveProperty('name', name)
-            expect(res.body).toHaveProperty('isGold', isGold)
-            expect(res.body).toHaveProperty('phone', phone)
+                expect(res.body).toHaveProperty('name', name);
+                expect(res.body).toHaveProperty('isGold', isGold);
+                expect(res.body).toHaveProperty('phone', phone);
             }
-        )
+        );
 
     });
-})
+});

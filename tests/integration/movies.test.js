@@ -17,13 +17,13 @@ describe('/api/moveis', () => {
                 {title: 'movie2', numberInStock: 2, dailyRentalRate: 1, genre: {name: 'genre2'}}
             ]);
             const res = await request(server).get('/api/movies');
+            await Movie.deleteMany({});
 
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
             expect(res.body.some(g => g.title === 'movie1')).toBeTruthy();
             expect(res.body.some(g => g.title === 'movie2')).toBeTruthy();
 
-            await Movie.deleteMany({});
         });
 
         it('should empty body with no movies', async () => {
@@ -47,12 +47,12 @@ describe('/api/moveis', () => {
                 }
             );
             const res = await request(server).get(`/api/movies/${movie._id}`);
+            await Movie.deleteMany({});
 
             expect(res.status).toBe(200);
             expect(Object.keys(res.body)).toEqual(
                 expect.arrayContaining(['title', 'numberInStock', 'dailyRentalRate',
                     'genre']));
-            await Movie.deleteMany({});
         });
 
         it('should return 404 status if given id doesnt exist', async () => {
@@ -101,10 +101,10 @@ describe('/api/moveis', () => {
             const res = await exec();
             const movie = await Movie.find({name: 'Movie1'});
 
+            await Genre.deleteMany({});
             expect(res.status).toBe(200);
             expect(movie).not.toBeNull();
 
-            await Genre.deleteMany({});
 
         });
 
@@ -188,7 +188,7 @@ describe('/api/moveis', () => {
                     title: 'movie1',
                     numberInStock: 2,
                     dailyRentalRate: 1,
-                    genre: { name: 'genre1'}
+                    genre: {name: 'genre1'}
                 }
             );
         });
@@ -242,13 +242,13 @@ describe('/api/moveis', () => {
 
         beforeEach(async () => {
             token = new User().generateAuthToken();
-            const genre = await Genre.create({name:'genre1'})
-            genreId = genre._id
+            const genre = await Genre.create({name: 'genre1'});
+            genreId = genre._id;
             movie = await Movie.create({
                     title: 'movie1',
                     numberInStock: 2,
                     dailyRentalRate: 1,
-                    genre: { _id: genre._id, name: 'genre1'}
+                    genre: {_id: genre._id, name: 'genre1'}
 
                 }
             );
@@ -344,7 +344,6 @@ describe('/api/moveis', () => {
             numberInStock = 10;
             dailyRentalRate = 3;
             const res = await exec(movie._id);
-            console.log(res.error)
             const updatedMovie = await Movie.findById(movie._id);
 
             expect(updatedMovie.title).toBe("NewMovie");

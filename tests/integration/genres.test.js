@@ -5,9 +5,6 @@ const server = require('../../app');
 
 describe('api/genres', () => {
 
-    afterEach(async () => {
-        await Genre.deleteMany({});
-    });
 
     describe(' GET /', () => {
         it('should return all existing genres', async () => {
@@ -17,11 +14,13 @@ describe('api/genres', () => {
                 {name: 'genre2'}
             ]);
             const res = await request(server).get('/api/genres');
+            await Genre.deleteMany({})
 
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
             expect(res.body.some(g => g.name === 'genre1')).toBeTruthy();
             expect(res.body.some(g => g.name === 'genre2')).toBeTruthy();
+
         });
 
         it('should empty body with no gernes', async () => {
@@ -59,12 +58,16 @@ describe('api/genres', () => {
             .set('x-auth-token', token)
             .send({name});
     };
-    beforeEach(() => {
-        token = new User().generateAuthToken();
-
-    });
 
     describe('POST/', () => {
+        beforeEach(() => {
+            token = new User().generateAuthToken();
+
+        });
+        afterEach(async () => {
+            await Genre.deleteMany({});
+        });
+
         it('should return 401 status if user is not authenticated', async () => {
 
             token = '';
