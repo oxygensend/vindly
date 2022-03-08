@@ -11,7 +11,6 @@ exports.create = async (req, res) => {
     if (!genre)
         return res.status(400).send('Invalid genre...');
 
-    console.log(genre);
     const movie = await Movie.create({
         title: value.title,
         numberInStock: value.numberInStock,
@@ -20,6 +19,7 @@ exports.create = async (req, res) => {
             _id: genre._id,
             name: genre.name,
         }
+
     });
     res.send(movie);
 };
@@ -33,31 +33,38 @@ exports.update = async (req, res) => {
 
     let movie = await Movie.findById(req.params.id);
     if (!movie)
-        return res.status(404).send("Page not found.");
+        return res.status(404).send("Invalid movie`");
 
     const {error, value} = validate(req.body);
 
     if (error)
         return res.status(400).send(error.message);
 
+    const genre = await Genre.findById(req.body.genreId);
+    if (!genre)
+        return res.status(400).send('Invalid genre...');
+
     movie.title = value.title;
     movie.numberInStock = value.numberInStock;
     movie.dailyRentalRate = value.dailyRentalRate;
-    movie.author = value.author;
-    movie.save();
+    movie.genre = {
+        _id: genre._id,
+        name: genre.name,
+    }
+    await movie.save();
     res.send(movie);
 };
 
 exports.get = async (req, res) => {
     const movie = await Movie.findById(req.params.id);
     if (!movie)
-        return res.status(404).send("Page not found.");
+        return res.status(404).send("Invalid movie");
     res.send(movie);
 };
 
 exports.destroy = async (req, res) => {
     const movie = await Movie.findByIdAndRemove(req.params.id);
     if (!movie)
-        return res.status(404).send("Page not found.");
+        return res.status(404).send("Invalid movie");
     res.send(movie);
 };

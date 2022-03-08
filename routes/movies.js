@@ -5,9 +5,9 @@ const admin = require('../middlewares/admin');
 const router = require('express').Router();
 
 router.get('/', MovieController.index);
-router.post('/', validateObjectId, auth, MovieController.create);
-router.put('/:id', validateObjectId, auth, MovieController.update);
-router.get('/:id', MovieController.get);
-router.delete('/:id', validateObjectId, auth, admin, MovieController.destroy);
+router.post('/',  auth, MovieController.create);
+router.put('/:id',  auth, validateObjectId ,MovieController.update);
+router.get('/:id', validateObjectId, MovieController.get);
+router.delete('/:id',  auth, admin, validateObjectId, MovieController.destroy);
 
 module.exports = router;

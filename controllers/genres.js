@@ -20,6 +20,8 @@ exports.index = async (req, res, next) => {
 exports.update = async (req, res) => {
 
     let genre = await Genre.findById(req.params.id);
+    if(!genre)
+        return res.status(404).send('Invalid genre...')
 
     const {error, value} = validate(req.body);
 
@@ -27,16 +29,20 @@ exports.update = async (req, res) => {
         return res.status(400).send(error.message);
 
     genre.name = value.name;
-    genre.save();
+    await genre.save();
     res.send(genre);
 };
 
 exports.get = async (req, res) => {
     const genre = await Genre.findById(req.params.id);
+    if(!genre)
+        return res.status(404).send('Invalid genre...')
     res.send(genre);
 };
 
 exports.destroy = async (req, res) => {
     const genre = await Genre.findByIdAndRemove(req.params.id);
+    if(!genre)
+        return res.status(404).send('Invalid genre...')
     res.send(genre);
 };
