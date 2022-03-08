@@ -7,21 +7,19 @@ const router = require('express').Router();
 router.get('/', CustomerController.index);
 router.post('/',
     auth,
-    admin,
     CustomerController.create
 );
 router.put('/:id',
-    validateObjectId,
     auth,
-    admin,
+    validateObjectId,
     CustomerController.update);
 router.get('/:id',
     validateObjectId,
     CustomerController.get);
 router.delete('/:id',
-    validateObjectId,
     auth,
     admin,
+    validateObjectId,
     CustomerController.destroy);
 
 module.exports = router;
