@@ -20,9 +20,11 @@
   },
   "devDependencies": {
     "jest": "^27.5.1",
-    "supertest": "^6.2.2"
+    "supertest": "^6.2.2",
+    "nodemon": "^2.0.15"
   },
   "scripts": {
-    "test": "jest  --verbose --runInBand --coverage "
+    "test": "jest  --verbose --runInBand --coverage ",
+    "start": "nodemon app.js"
   }
 }

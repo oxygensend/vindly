@@ -1,4 +1,4 @@
 {
-    "jwtPrivateKey": "",
-    "db": "mongodb://localhost/vidly"
+    "jwtPrivateKey": "secret",
+    "db": "mongodb://mongodb:27017/vidly"
 }

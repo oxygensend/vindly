@@ -1,6 +1,6 @@
 const router = require('express').Router();
 router.get('/', (req, res) => {
-    res.send('Vidly');
+    res.send('Viddwly');
 });
-
+var log = "xd"
 module.exports = router;
