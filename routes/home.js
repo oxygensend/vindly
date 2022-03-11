@@ -1,6 +1,5 @@
 const router = require('express').Router();
 router.get('/', (req, res) => {
-    res.send('Viddwly');
+    res.send('Vidly - REST API for movie rental');
 });
-var log = "xd"
 module.exports = router;
