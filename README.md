@@ -41,7 +41,7 @@ API can be find also on heroku servers: https://vidapily.herokuapp.com
 ## How to use?
 
 ### Authorization
- set header 'x-auth-token' to generated token
+ set header `x-auth-token` to generated token
 
 ### Genres
 
