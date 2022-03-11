@@ -4,7 +4,6 @@ const {Movie} = require("../models/movie");
 const Fawn = require('fawn');
 const config = require('config');
 
-Fawn.init( config.get('db'));
 
 exports.create = async (req, res) => {
 
