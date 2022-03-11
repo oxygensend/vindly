@@ -29,7 +29,7 @@ To run tests `docker-compose run api npm test`
 
 ### deployment
 
-API can be find also on heroku servers: https://vidapily.herokuapp.com - working on it
+API can be find also on heroku servers: https://vidapily.herokuapp.com 
 
 ---
 
@@ -39,6 +39,9 @@ API can be find also on heroku servers: https://vidapily.herokuapp.com - working
 ---
 
 ## How to use?
+
+### Authorization
+ set header `x-auth-token` to generated token
 
 ### Genres
 
