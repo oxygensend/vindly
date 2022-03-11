@@ -2,7 +2,7 @@ const {Rental, validate} = require('../models/rental');
 const {Customer} = require("../models/customer");
 const {Movie} = require("../models/movie");
 const Fawn = require('fawn');
-const config = require("config");
+
 
 
 exports.index = async (req, res) => {
@@ -40,6 +40,7 @@ exports.create = async (req, res) => {
     });
 
     // transaction
+
     try {
         await new Fawn.Task()
             .save('rentals', rental)

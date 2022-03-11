@@ -1,6 +1,6 @@
 {
   "name": "vidly",
-  "version":"1.0.0",
+  "version": "1.0.0",
   "main": "app.js",
   "directories": {
     "test": "tests"
@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "mongodb": "^4.0.0",
     "mongoose": "^6.2.3",
     "winston": "^3.6.0",
     "winston-mongodb": "^5.0.7"
@@ -36,5 +37,4 @@
     "nodemon": "^2.0.15",
     "supertest": "^6.2.2"
   }
-
 }
