@@ -29,7 +29,7 @@ To run tests `docker-compose run api npm test`
 
 ### deployment
 
-API can be find also on heroku servers: https://vidapily.herokuapp.com 
+API can be find also on heroku servers: https://vidapily.herokuapp.com  * Issue with rentals POST request(503) - in dev mode everything works *
 
 ---
 
