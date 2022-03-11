@@ -11,5 +11,5 @@ module.exports = () => {
         .catch(e=> logger.error('Cannot connect to mongoDB'));
 
 
-    Fawn.init( uri);
+    Fawn.init( mongoose);
 };
