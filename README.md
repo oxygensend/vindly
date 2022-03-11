@@ -29,7 +29,7 @@ To run tests `docker-compose run api npm test`
 
 ### deployment
 
-API can be find also on heroku servers: https://vidapily.herokuapp.com  * Issue with rentals POST request(503) - in dev mode everything works Fawn has been not updated for 4 years so it doesnt understand mongodb:srv// protocol. I cannot change this tranasction to MangoDB transastions becouse `replica set` is not clear for me *
+API can be find also on heroku servers: https://vidapily.herokuapp.com  * Issue with rentals POST request(503) - in dev mode everything works Fawn has been not updated for 4 years so it doesnt understand mongodb:srv// protocol. I cannot change this transaction to MangoDB transactions because `replica set` is not clear for me *
 
 ---
 
