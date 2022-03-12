@@ -9,11 +9,11 @@ module.exports = () => {
     mongoose.connect(uri)
         .then(() => {
                 logger.info('Connected to MongoDb');
+            Fawn.init(uri);
             }
         )
         .catch(e => logger.error('Cannot connect to mongoDB'));
 
-    Fawn.init(uri);
 
 
 };
