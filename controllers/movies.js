@@ -1,7 +1,12 @@
 const {Movie, validate} = require('../models/movie');
 const {Genre} = require("../models/genre");
+const Request = require("../models/request");
 
 exports.create = async (req, res) => {
+    const requests  = await Request.userRequests(req.user);
+    if (requests > 10 )
+        return res.status(404).send('You have exceeded your month limit');
+
     const {error, value} = validate(req.body);
 
     if (error)
@@ -11,16 +16,19 @@ exports.create = async (req, res) => {
     if (!genre)
         return res.status(400).send('Invalid genre...');
 
+
+    console.log(genre);
     const movie = await Movie.create({
         title: value.title,
         numberInStock: value.numberInStock,
         dailyRentalRate: value.dailyRentalRate,
         genre: {
             _id: genre._id,
-            name: genre.name,
+            name: genre.name
         }
 
     });
+    console.log('siem')
     res.send(movie);
 };
 

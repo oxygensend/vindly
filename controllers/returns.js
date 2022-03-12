@@ -3,9 +3,13 @@ const {Customer} = require("../models/customer");
 const {Movie} = require("../models/movie");
 const Fawn = require('fawn');
 const config = require('config');
+const Request = require("../models/request");
 
 
 exports.create = async (req, res) => {
+    const requests = await Request.userRequests(req.user);
+    if (requests > 10)
+        return res.status(404).send('You have exceeded your month limit');
 
     const {error, value} = validate(req.body);
     if (error) return res.status(400).send(error.message);
@@ -25,7 +29,7 @@ exports.create = async (req, res) => {
     await rental.save();
 
     try {
-         await new Fawn.Task()
+        await new Fawn.Task()
             .update('movies', {_id: movie._id}, {
                 $inc: {numberInStock: 1}
             })

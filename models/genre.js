@@ -2,12 +2,16 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const genreSchema = new mongoose.Schema({
+
     name: {
         type: String,
         minlength: 3,
         maxlength: 255,
         required: true,
+        unique: true
     }
+
+
 });
 const Genre = mongoose.model('Genre', genreSchema);
 

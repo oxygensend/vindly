@@ -22,8 +22,8 @@ const Movie = mongoose.model('Movie', new mongoose.Schema({
         required: true,
     },
     genre: {
-        type: genreSchema,
-        required: true,
+      type: genreSchema,
+      required: true
     }
 
 }));

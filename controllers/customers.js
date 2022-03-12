@@ -1,10 +1,16 @@
 const {Customer, validate} = require('../models/customer');
+const Request = require("../models/request");
 
 exports.create = async (req, res) => {
+    const requests  = await Request.userRequests(req.user);
+    if (requests > 10 )
+        return res.status(404).send('You have exceeded your month limit');
+
     const {error, value} = validate(req.body);
 
     if (error)
         return res.status(400).send(error.message);
+
 
     const customer = await Customer.create({
         name: value.name,
