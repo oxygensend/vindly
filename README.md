@@ -34,7 +34,6 @@ API can be find also on heroku servers: https://vidapily.herokuapp.com  * Issue 
 ---
 
 ## Future updates
-    Add limit for not authenticated( without admin role) users for creating  max 10 sucess POST request per month
 
 ---
 
@@ -42,6 +41,8 @@ API can be find also on heroku servers: https://vidapily.herokuapp.com  * Issue 
 
 ### Authorization
  set header `x-auth-token` to generated token
+ There is limit for users withour admin role for creating  max 10 sucess POST request per month(calendar)
+
 
 ### Genres
 
